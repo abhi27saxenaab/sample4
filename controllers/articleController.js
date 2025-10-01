@@ -69,15 +69,15 @@ const createArticle = async (req, res) => {
       viewCount: 0
     });
     
-    const articleWithCategory = await Article.findByPk(article.id, {
-      include: [{
-        model: Category,
-        as: 'category', // Use the alias
-        attributes: ['id', 'name', 'description']
-      }]
-    });
+    // const articleWithCategory = await Article.findByPk(article.id, {
+    //   include: [{
+    //     model: Category,
+    //     as: 'category', // Use the alias
+    //     attributes: ['id', 'name', 'description']
+    //   }]
+    // });
     
-    res.status(201).json(articleWithCategory);
+    res.status(201).json(article);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -245,14 +245,7 @@ const getRecommendedArticles = async (req, res) => {
 // Get all articles
 const getAllArticles = async (req, res) => {
   try {
-    const articles = await Article.findAll({
-      include: [{
-        model: Category,
-        as: 'category', // Use the alias
-        attributes: ['id', 'name', 'description']
-      }],
-      order: [['createdAt', 'DESC']]
-    });
+    const articles = await Article.findAll();
     
     res.json(articles);
   } catch (error) {

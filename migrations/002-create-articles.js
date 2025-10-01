@@ -39,16 +39,16 @@ module.exports = {
         allowNull: false,
         defaultValue: 0
       },
-      categoryId: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'categories',
-          key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
-      },
+      // categoryId: {
+      //    type: Sequelize.INTEGER,
+      //    allowNull: true,
+      //    references: {
+      //      model: 'categories',
+      //      key: 'id'
+      //    },
+      //    onUpdate: 'CASCADE',
+      //    onDelete: 'SET NULL'
+      // },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -63,7 +63,7 @@ module.exports = {
 
     // Add indexes for better performance
     await queryInterface.addIndex('articles', ['slug']);
-    await queryInterface.addIndex('articles', ['categoryId']);
+    //await queryInterface.addIndex('articles', ['categoryId']);
     await queryInterface.addIndex('articles', ['viewCount']);
   },
 

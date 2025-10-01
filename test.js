@@ -2,9 +2,14 @@ const { application } = require("express");
 
 =========================
 
+
+viewCount: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    allowNull: false
+},
+
 router.put('/:slug/viewed', incrementViewCount);
-
-
 
 // Tier 1: Increment view count
 const incrementViewCount = async (req, res) => {
@@ -23,7 +28,37 @@ const incrementViewCount = async (req, res) => {
   }
 };
 
+npx sequelize-cli db:migrate
+
+
 ===============================================================
+
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/database');
+
+const Category = sequelize.define('Category', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  }
+}, {
+  // Remove tableName since migrations handle table creation
+});
+module.exports = Category;
+
+
+
+
 
 
 call API
@@ -85,6 +120,17 @@ module.exports = Category;
 
 
 //seed data
+
+
+Article.belongsTo(Category, {
+  foreignKey: 'categoryId',
+  as: 'category'
+});
+
+Category.hasMany(Article, {
+  foreignKey: 'categoryId',
+  as: 'articles'
+});
 
 
 

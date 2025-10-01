@@ -1,0 +1,177 @@
+viewCount: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+    allowNull: false
+},
+
+
+
+
+router.put('/:slug/viewed', incrementViewCount);
+
+
+// Tier 1: Increment view count
+const incrementViewCount = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const article = await Article.findOne({ where: { slug } });
+    if (!article) {
+      return res.status(404).json({ error: 'Article not found' });
+    }
+    // Increment view count
+    article.viewCount += 1;
+    await article.save();
+    res.json(article);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+===============
+
+Modesl
+
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/database');
+
+const Category = sequelize.define('Category', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  }
+}, {
+  // Remove tableName since migrations handle table creation
+});
+module.exports = Category;
+
+=======================
+
+
+Article.belongsTo(Category, {
+  foreignKey: 'categoryId',
+  as: 'category'
+});
+
+Category.hasMany(Article, {
+  foreignKey: 'categoryId',
+  as: 'articles'
+});
+
+==============
+
+Seed
+
+
+'use strict';
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    const categories = [
+      {
+        name: 'Travel',
+        description: 'Articles about travel destinations and experiences',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: 'Animals',
+        description: 'Articles about wildlife and pets',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+      
+    ];
+    await queryInterface.bulkInsert('categories', categories, {});
+  },
+
+  async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete('categories', null, {});
+  }
+};
+
+
+
+
+=============
+# Run migrations again
+npx sequelize-cli db:migrate
+
+# Seed the database
+npx sequelize-cli db:seed:all
+
+# Undo all migrations
+npx sequelize-cli db:migrate:undo:all
+
+npx sequelize-cli db:migrate
+
+
+
+
+
+
+
+call API
+
+
+// Get all categories
+const getAllCategories = async (req, res) => {
+  try {
+    const categories = await Category.findAll({
+      order: [['name', 'ASC']]
+    });
+    
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+// Get all categories
+router.get('/', getAllCategories);
+
+
+==================================
+
+
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 2. Use useEffect to perform the API call
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/:slug/viewed'); // Replace with your API endpoint
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        setData(result); // Set the fetched data in state
+      } catch (err) {
+        setError(err); // Handle errors
+      } finally {
+        setLoading(false); // Set loading to false after fetch attempt
+      }
+    };
+    fetchData(); // Call the async function
+    // Optional: Cleanup function if needed (e.g., to cancel pending requests)
+    return () => {
+      // Cleanup logic here
+    };
+  }, []);
+  
+  
+  
+  

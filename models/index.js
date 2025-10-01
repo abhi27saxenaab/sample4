@@ -1,9 +1,9 @@
 const { sequelize } = require('../config/database');
 const Article = require('./article');
 const Category = require('./category');
-const Category1 = require('./category1');
 
-// Define associations
+
+//Define associations
 Article.belongsTo(Category, {
   foreignKey: 'categoryId',
   as: 'category'
@@ -18,5 +18,5 @@ module.exports = {
   sequelize,
   Article,
   Category,
-  Category1
+  //Category1
 };
