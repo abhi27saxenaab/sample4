@@ -1,0 +1,20 @@
+# Run migrations again
+npx sequelize-cli db:migrate
+
+# Seed the database
+npx sequelize-cli db:seed:all
+
+# Undo all migrations
+npx sequelize-cli db:migrate:undo:all
+
+
+
+/*"seed": "node seeders/seedCategories.js",*/
+
+
+
+npx sequelize-cli model:generate --name Category1 --attributes firstName:string,lastName:string,email:string,password:string
+
+
+
+npx sequelize-cli model:generate --name Category2 --attributes name:string,description:string
