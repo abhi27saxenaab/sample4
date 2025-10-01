@@ -1,23 +1,99 @@
+const { application } = require("express");
+
+=========================
+
+router.put('/:slug/viewed', incrementViewCount);
+
+
+
 // Tier 1: Increment view count
 const incrementViewCount = async (req, res) => {
   try {
     const { slug } = req.params;
-    
     const article = await Article.findOne({ where: { slug } });
-    
     if (!article) {
       return res.status(404).json({ error: 'Article not found' });
     }
-    
     // Increment view count
     article.viewCount += 1;
     await article.save();
-    
     res.json(article);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+===============================================================
+
+
+call API
+
+
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // 2. Use useEffect to perform the API call
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/:slug/viewed'); // Replace with your API endpoint
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        setData(result); // Set the fetched data in state
+      } catch (err) {
+        setError(err); // Handle errors
+      } finally {
+        setLoading(false); // Set loading to false after fetch attempt
+      }
+    };
+    fetchData(); // Call the async function
+    // Optional: Cleanup function if needed (e.g., to cancel pending requests)
+    return () => {
+      // Cleanup logic here
+    };
+  }, []);
+
+===========================================================================
+
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../config/database');
+
+const Category = sequelize.define('Category', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  }
+}, {
+  // Remove tableName since migrations handle table creation
+});
+module.exports = Category;
+
+
+
+//seed data
+
+
+
+===================
+
+
+
+
+
 
 
 

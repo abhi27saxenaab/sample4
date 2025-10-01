@@ -7,7 +7,14 @@ npx sequelize-cli db:seed:all
 # Undo all migrations
 npx sequelize-cli db:migrate:undo:all
 
+cd backend
+google kar
 
+open kar config
+
+npx sequelize-cli migration:create --name User
+
+bhai naam le rha hai saaf pata chalega ki cheeting kar rha hai
 
 /*"seed": "node seeders/seedCategories.js",*/
 

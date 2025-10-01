@@ -4,13 +4,7 @@ const seedCategories = async () => {
   try {
     const categories = [
       { name: 'Travel', description: 'Articles about travel destinations and experiences' },
-      { name: 'Animals', description: 'Articles about wildlife and pets' },
-      { name: 'Technology', description: 'Articles about latest tech trends and innovations' },
-      { name: 'Food', description: 'Articles about cooking, recipes, and culinary experiences' },
-      { name: 'Sports', description: 'Articles about various sports and athletic events' },
-      { name: 'Health', description: 'Articles about health, wellness, and medical advice' },
-      { name: 'Science', description: 'Articles about scientific discoveries and research' },
-      { name: 'Business', description: 'Articles about business, finance, and entrepreneurship' }
+      { name: 'Animals', description: 'Articles about wildlife and pets' }
     ];
 
     for (const categoryData of categories) {
@@ -33,5 +27,4 @@ if (require.main === module) {
     process.exit(0);
   });
 }
-
 module.exports = seedCategories;

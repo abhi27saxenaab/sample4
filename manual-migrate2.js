@@ -13,17 +13,23 @@ async function runManualMigrations() {
         console.log('Running manual migrations...');
         // Create users table
         await sequelize.query(`
-        CREATE TABLE categories6 (
+        CREATE TABLE categories7 (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL UNIQUE,
             description TEXT
         )
         `);
         await sequelize.query(`
-        INSERT INTO categories6 (id,name,description) values 
+        INSERT INTO categories7 (id,name,description) values 
         ('1','Travel','TEST'),
         ('2','Animals','TEST')
         `);
+
+
+        await sequelize.query(`
+        ALTER TABLE categories6 ADD COLUMN category_id INT `);
+
+
     } catch (error) {
     console.error('Manual migration failed:', error);
   } finally {
